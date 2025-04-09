@@ -61,19 +61,19 @@ public:
 
 		switch (code) {
 		case elm::key::H:
-		case elm::key::Left:
+		case elm::key::LEFT:
 			this->position.x -= 0.1;
 			break;
 		case elm::key::J:
-		case elm::key::Down:
+		case elm::key::DOWN:
 			this->position.y -= 0.1;
 			break;
 		case elm::key::K:
-		case elm::key::Up:
+		case elm::key::UP:
 			this->position.y += 0.1;
 			break;
 		case elm::key::L:
-		case elm::key::Right:
+		case elm::key::RIGHT:
 			this->position.x += 0.1;
 			break;
 		default:;
@@ -86,11 +86,20 @@ public:
 
 	void on_update(elm::timestep ts)
 	{
-		if (elm::input::any_key_pressed<elm::key::H, elm::key::Left>()) {
-			ELM_ASSERT(false);
+		if (elm::input::any_key_pressed<elm::key::H, elm::key::LEFT>()) {
+			this->position.x -= this->translation_speed * ts.get_seconds();
+			this->camera.set_view_matrix(glm::translate(glm::mat4(1.0f), -position));
+		} else if (elm::input::any_key_pressed<elm::key::J, elm::key::DOWN>()) {
+			this->position.y -= this->translation_speed * ts.get_seconds();
+			this->camera.set_view_matrix(glm::translate(glm::mat4(1.0f), -position));
+		} else if (elm::input::any_key_pressed<elm::key::K, elm::key::UP>()) {
+			this->position.y += this->translation_speed * ts.get_seconds();
+			this->camera.set_view_matrix(glm::translate(glm::mat4(1.0f), -position));
+		} else if (elm::input::any_key_pressed<elm::key::L, elm::key::RIGHT>()) {
+			this->position.x += this->translation_speed * ts.get_seconds();
+			this->camera.set_view_matrix(glm::translate(glm::mat4(1.0f), -position));
 		}
 	}
-
 
 	const elm::camera &get_camera()
 	{
