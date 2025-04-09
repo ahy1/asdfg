@@ -23,15 +23,15 @@ void game_layer::on_attach(void)
 			1.0f, 0.0f, 0.0f, 1.0f},
 		{
 			0.5f, -0.5, 0.0f,
-			1.0f, 0.0f,
+			4.0f, 0.0f,
 			0.0f, 1.0f, 0.0f, 1.0f},
 		{
 			0.5f, 0.5f, 0.0f,
-			1.0f, 1.0f,
+			4.0f, 4.0f,
 			0.0f, 0.0f, 1.0f, 1.0f},
 		{
 			-0.5f, 0.5f, 0.0f,
-			0.0f, 1.0f,
+			0.0f, 4.0f,
 			1.0f, 1.0f, 1.0f, 1.0f}
 	};
 	uint32_t indices[] ={
@@ -55,8 +55,24 @@ void game_layer::on_attach(void)
 	this->va->set_index_buffer(ib);
 
 	elm::texture_specification spec;
-	spec.format = elm::image_format::RGB8;
-	this->texture = elm::texture_2d::create("content/textures/IMG_2137.JPG", spec);
+	//spec.format = elm::image_format::RGB8;
+	//this->texture = elm::texture_2d::create("content/textures/IMG_2137.JPG", spec);
+
+	spec.format = elm::image_format::RGBA8;
+	spec.width = 8;
+	spec.height = 8;
+	spec.mag_filter = elm::texture_filter::NEAREST;
+	spec.wrap_s = elm::texture_wrap::REPEAT;
+	spec.wrap_t = elm::texture_wrap::REPEAT;
+	this->texture = elm::texture_2d::create(spec);
+	uint32_t texture_data[8*8] = {0};
+	for (int iy=0; iy<8; ++iy) {
+		for (int ix =0; ix<8; ++ix) {
+			texture_data[ix+8*iy] = (iy+ix)%2 ? UINT32_MAX : 255u << 24;
+		}
+	}
+	this->texture->set_data(texture_data, sizeof texture_data);
+
 
 	shader = elm::shader::create("./content/shaders/shader.glsl");
 

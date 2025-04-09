@@ -37,7 +37,7 @@ layout (location = 0) out vec4 o_color;
 void main()
 {
 	o_color = vec4(texture(u_texture, v_uv).rgb, 1.0);
-	if (length(v_uv*2-1)>0.5) {
+/*	if (length(v_uv*2-1)>0.5) {
 		o_color = v_color;// / (1 + length(v_uv*2-1)*2-1);
-	}
+	}*/
 }
